@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام الشرطة | لوحة العمليات</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="ops-strip" id="opsStrip">
+  <span><span class="dot"></span>الاتصال مباشر</span>
+  <span>الضباط النشطين: <b id="opsActive">—</b></span>
+  <span>تقارير معلّقة: <b id="opsReports">—</b></span>
+  <span>طلبات معلّقة: <b id="opsRequests">—</b></span>
+  <span id="opsClock" style="margin-right:auto"></span>
+</div>
+
+<div class="app">
+  <!-- الشريط الجانبي -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-badge">ش</div>
+      <div class="brand-text">
+        <div class="name">قسم الشرطة</div>
+        <div class="sub">OPS-CONSOLE</div>
+      </div>
+    </div>
+
+    <button class="nav-item active" data-page="overview"><span class="ico">◈</span> نظرة عامة</button>
+    <button class="nav-item" data-page="officers"><span class="ico">⛨</span> الضباط</button>
+    <button class="nav-item" data-page="ranks"><span class="ico">★</span> الرتب</button>
+    <button class="nav-item" data-page="reports"><span class="ico">▤</span> التقارير <span class="badge-count hidden" id="navReportsCount">0</span></button>
+    <button class="nav-item" data-page="requests"><span class="ico">✉</span> الطلبات <span class="badge-count hidden" id="navRequestsCount">0</span></button>
+
+    <div class="sidebar-footer">
+      <div class="me-card" id="meCard">
+        <div class="avatar-fallback">?</div>
+        <div>
+          <div class="who">جارٍ التحميل…</div>
+          <div class="rank-tag">—</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn">تسجيل الخروج</button>
+    </div>
+  </aside>
+
+  <!-- المحتوى -->
+  <main class="main">
+
+    <!-- نظرة عامة -->
+    <section id="page-overview" class="page">
+      <div class="page-header">
+        <div>
+          <div class="eyebrow">DASHBOARD // 01</div>
+          <h1>نظرة عامة</h1>
+          <p>ملخص سريع عن حالة القسم الآن</p>
+        </div>
+      </div>
+      <div class="stat-grid" id="statGrid"></div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>أعلى الضباط نقاطاً</h3></div>
+        <table>
+          <thead><tr><th>الضابط</th><th>الرتبة</th><th>النقاط</th><th>الحالة</th></tr></thead>
+          <tbody id="topOfficersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- الضباط -->
+    <section id="page-officers" class="page hidden">
+      <div class="page-header">
+        <div>
+          <div class="eyebrow">PERSONNEL // 02</div>
+          <h1>الضباط</h1>
+          <p>إدارة الرتب، النقاط، وحالة كل ضابط</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>قائمة الضباط</h3>
+          <span id="officersCount" style="font-family:var(--font-mono);font-size:12px;color:var(--muted)"></span>
+        </div>
+        <table>
+          <thead><tr><th>الضابط</th><th>الرتبة</th><th>النقاط</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+          <tbody id="officersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- الرتب -->
+    <section id="page-ranks" class="page hidden">
+      <div class="page-header">
+        <div>
+          <div class="eyebrow">HIERARCHY // 03</div>
+          <h1>الرتب</h1>
+          <p>هيكل الرتب الرسمي وصلاحيات كل رتبة</p>
+        </div>
+        <button class="btn" id="addRankBtn">+ إضافة رتبة</button>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>المستوى</th><th>الرتبة</th><th>أقل نقاط</th><th>الصلاحيات</th><th></th></tr></thead>
+          <tbody id="ranksBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- التقارير -->
+    <section id="page-reports" class="page hidden">
+      <div class="page-header">
+        <div>
+          <div class="eyebrow">LOGS // 04</div>
+          <h1>التقارير</h1>
+          <p>تقارير الدوريات والحوادث المقدّمة من الضباط</p>
+        </div>
+        <button class="btn" id="addReportBtn">+ تقرير جديد</button>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>العنوان</th><th>النوع</th><th>الضابط</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+          <tbody id="reportsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- الطلبات -->
+    <section id="page-requests" class="page hidden">
+      <div class="page-header">
+        <div>
+          <div class="eyebrow">APPLICATIONS // 05</div>
+          <h1>الطلبات</h1>
+          <p>طلبات التجنيد، الترقية، والإجازات</p>
+        </div>
+      </div>
+      <div class="panel">
+        <table>
+          <thead><tr><th>النوع</th><th>المتقدم</th><th>الحالة</th><th>التاريخ</th><th>إجراءات</th></tr></thead>
+          <tbody id="requestsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="modalRoot"></div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
