@@ -1,3 +1,15 @@
 [build]
   base = "frontend"
   publish = "."
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://0lpd.up.railway.app/api/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/auth/*"
+  to = "https://0lpd.up.railway.app/auth/:splat"
+  status = 200
+  force = true
