@@ -1,2 +1,2 @@
-// غيّر هذا الرابط برابط الباكند بعد رفعه على Railway
-const API_URL = 'https://0lpd.up.railway.app';
+// صارت الطلبات تمر عبر Netlify نفسه (بروكسي) فما نحتاج رابط خارجي
+const API_URL = '';
