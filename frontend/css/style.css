@@ -6,18 +6,18 @@
 
 :root {
   /* الألوان */
-  --bg: #0A0E16;
-  --bg-grid: #0D1220;
-  --surface: #121826;
-  --surface-2: #1A2235;
-  --surface-3: #212C44;
-  --border: #232C42;
-  --border-light: #2E3A57;
+  --bg: #050914;
+  --bg-grid: #08101F;
+  --surface: #0C1626;
+  --surface-2: #12203A;
+  --surface-3: #182B4D;
+  --border: #1B2C4D;
+  --border-light: #253C66;
 
-  --gold: #C9A24B;
-  --gold-soft: rgba(201, 162, 75, 0.12);
-  --steel: #6C92B8;
-  --steel-soft: rgba(108, 146, 184, 0.12);
+  --gold: #D4AF5A;
+  --gold-soft: rgba(212, 175, 90, 0.12);
+  --steel: #4E7FB0;
+  --steel-soft: rgba(78, 127, 176, 0.14);
 
   --text: #E7EAF0;
   --muted: #8993A8;
@@ -45,8 +45,8 @@ html, body {
 body {
   font-family: var(--font-display);
   background:
-    radial-gradient(ellipse at top right, rgba(108,146,184,0.07), transparent 50%),
-    radial-gradient(ellipse at bottom left, rgba(201,162,75,0.05), transparent 50%),
+    radial-gradient(ellipse at top right, rgba(78,127,176,0.10), transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(212,175,90,0.04), transparent 50%),
     var(--bg);
   background-attachment: fixed;
   color: var(--text);
@@ -538,6 +538,33 @@ tr:hover td { background: rgba(255,255,255,0.012); }
   .roster-header { padding: 14px 18px; }
   .roster-wrap { padding: 28px 16px 60px; }
   .roster-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px; }
+}
+
+/* ===== الشريط العلوي بالشعار ===== */
+.top-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: linear-gradient(180deg, rgba(212,175,90,0.06), transparent);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  z-index: 3;
+}
+.top-banner img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+.top-banner span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
 }
 
 .hidden { display: none !important; }
