@@ -43,14 +43,9 @@ const RANKS = [
   { level: 21, name: 'Supervisor CID',                           discordRoleId: '1003351941948117073' },
 ];
 
-// الصلاحيات الافتراضية: فقط أعلى 3 رتب تاخذ صلاحيات إدارية كاملة، الباقي بدون صلاحيات (عدّلها كما تحب من الداشبورد بعدين)
-function defaultPermissions(level) {
-  if (level <= 3) {
-    return { manageOfficers: true, manageRanks: true, reviewReports: true, reviewRequests: true, sendPoints: true };
-  }
-  if (level <= 9) {
-    return { manageOfficers: false, manageRanks: false, reviewReports: true, reviewRequests: true, sendPoints: true };
-  }
+// كل الرتب الـ21 هذي رتب تنظيمية للعرض بصفحة الهيكل القيادي فقط
+// ما تعطي أي صلاحيات بالداشبورد — الصلاحيات محصورة بحساب واحد فقط عبر سكربت grantFullAccess.js
+function defaultPermissions() {
   return { manageOfficers: false, manageRanks: false, reviewReports: false, reviewRequests: false, sendPoints: false };
 }
 
@@ -67,7 +62,7 @@ async function seed() {
       level: r.level,
       discordRoleId: r.discordRoleId,
       color: '#C9A24B',
-      permissions: defaultPermissions(r.level),
+      permissions: defaultPermissions(),
     });
     console.log(`  ➕ ${r.name}`);
   }
