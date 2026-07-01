@@ -43,14 +43,14 @@ async function load() {
   const [ranks, officers] = await Promise.all([api('/api/ranks'), api('/api/officers')]);
   if (!ranks || !officers) return;
 
-  const sorted = [...ranks].sort((a,b) => a.level - b.level);
+  const sorted = [...ranks].sort((a,b) => a.level - b.level).filter(r => r.name !== 'المدير العام');
   const body = document.getElementById('rosterBody');
   body.innerHTML = sorted.map(rank => {
     const members = officers.filter(o => o.rank?._id === rank._id && o.status !== 'fired');
-    if (!members.length) return '';
     return `
       <section class="roster-rank-section">
         <h2 class="roster-rank-title" style="color:${rank.color}">${escapeHtml(rank.name)}</h2>
+        ${members.length ? `
         <div class="roster-grid">
           ${members.map(o => `
             <div class="roster-card">
@@ -60,9 +60,10 @@ async function load() {
             </div>
           `).join('')}
         </div>
+        ` : `<div class="roster-empty-rank">لا يوجد ضباط بهذه الرتبة حالياً</div>`}
       </section>
     `;
-  }).join('') || `<div class="empty-state"><div class="ico">∅</div>لا يوجد ضباط مسجلين برتب بعد</div>`;
+  }).join('');
 }
 load();
 </script>
