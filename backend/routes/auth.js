@@ -44,8 +44,18 @@ router.get('/discord/callback', async (req, res) => {
         redirect_uri: DISCORD_REDIRECT_URI,
       }),
     });
-    const tokenData = await tokenRes.json();
-    if (!tokenData.access_token) throw new Error('فشل الحصول على توكن الوصول');
+    const rawTokenText = await tokenRes.text();
+    let tokenData;
+    try {
+      tokenData = JSON.parse(rawTokenText);
+    } catch (parseErr) {
+      console.error('❌ رد غير متوقع من ديسكورد (مو JSON):', tokenRes.status, rawTokenText.slice(0, 300));
+      throw new Error(`ديسكورد رجّع رد غير متوقع (status ${tokenRes.status})`);
+    }
+    if (!tokenData.access_token) {
+      console.error('❌ Discord token error:', JSON.stringify(tokenData));
+      throw new Error(tokenData.error_description || tokenData.error || 'فشل الحصول على توكن الوصول');
+    }
 
     // جلب بيانات المستخدم
     const userRes = await fetch('https://discord.com/api/users/@me', {
