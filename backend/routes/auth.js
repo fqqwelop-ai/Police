@@ -101,7 +101,7 @@ router.get('/discord/callback', async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
-    res.redirect(`${FRONTEND_URL}/dashboard.html`);
+    res.redirect(`${FRONTEND_URL}/roster.html`);
   } catch (err) {
     console.error('Discord OAuth error:', err);
     res.redirect(`${FRONTEND_URL}/index.html?error=oauth_failed`);
