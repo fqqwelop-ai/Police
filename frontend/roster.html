@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام الشرطة | الهيكل القيادي</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="roster-header">
+  <div class="roster-brand">
+    <div class="brand-badge">ش</div>
+    <div class="brand-text">
+      <div class="name">قسم الشرطة</div>
+      <div class="sub">CHAIN OF COMMAND</div>
+    </div>
+  </div>
+  <a href="dashboard.html" class="btn">لوحة العمليات ◈</a>
+</div>
+
+<div class="roster-wrap">
+  <div class="roster-title">
+    <div class="eyebrow">OFFICIAL ROSTER</div>
+    <h1>الهيكل القيادي</h1>
+    <p>التسلسل الرسمي لرتب القسم والمنتسبين لكل رتبة</p>
+  </div>
+
+  <div id="rosterBody"></div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+async function api(path) {
+  const res = await fetch(`${API_URL}${path}`, { credentials: 'include' });
+  if (res.status === 401) { window.location.href = 'index.html'; return null; }
+  return res.json();
+}
+function escapeHtml(str = '') {
+  return String(str).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+}
+async function load() {
+  const [ranks, officers] = await Promise.all([api('/api/ranks'), api('/api/officers')]);
+  if (!ranks || !officers) return;
+
+  const sorted = [...ranks].sort((a,b) => a.level - b.level);
+  const body = document.getElementById('rosterBody');
+  body.innerHTML = sorted.map(rank => {
+    const members = officers.filter(o => o.rank?._id === rank._id && o.status !== 'fired');
+    if (!members.length) return '';
+    return `
+      <section class="roster-rank-section">
+        <h2 class="roster-rank-title" style="color:${rank.color}">${escapeHtml(rank.name)}</h2>
+        <div class="roster-grid">
+          ${members.map(o => `
+            <div class="roster-card">
+              ${o.avatar ? `<img src="${o.avatar}" alt="">` : `<div class="avatar-fallback" style="width:56px;height:56px;font-size:20px;margin:0 auto">${escapeHtml((o.username||'?')[0])}</div>`}
+              <div class="roster-card-name">${escapeHtml(o.username)}</div>
+              <div class="roster-card-tag" style="border-color:${rank.color};color:${rank.color}">${escapeHtml(rank.name)}</div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }).join('') || `<div class="empty-state"><div class="ico">∅</div>لا يوجد ضباط مسجلين برتب بعد</div>`;
+}
+load();
+</script>
+</body>
+</html>
